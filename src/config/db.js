@@ -1,28 +1,11 @@
 const mongoose = require('mongoose');
 
-let database;
+const dbClusterUrl = process.env.DB_CLUSTER_URL;
+const dbName = process.env.DB_NAME;
+const dbPassword = process.env.DB_PASSWORD;
+const dbUsername = process.env.DB_USERNAME;
 
-try {
-    const config = require('./db.json');
-    database = config.database;
-}
-catch {
-    database = {
-        dbClusterUrl: process.env.DB_CLUSTER_URL,
-        dbName: process.env.DB_NAME,
-        dbPassword: process.env.DB_PASSWORD,
-        dbUsername: process.env.DB_USERNAME,
-    };
-}
-
-const {
-    dbClusterUrl,
-    dbName,
-    dbPassword,
-    dbUsername,
-} = database;
-
-const isSrv = dbName && dbPassword;
+const isSrv = dbUsername && dbPassword;
 const dbURL = isSrv
     ? `${dbUsername}:${dbPassword}@${dbClusterUrl}`
     : dbClusterUrl;
